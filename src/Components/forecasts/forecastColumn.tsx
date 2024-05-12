@@ -22,7 +22,7 @@ const Text = styled.span`
 font-weight: bold; 
 `
 
-const Image = styled.image<{logo: string}>`
+const Image = styled.div<{logo: string}>`
  border-radius: 50%;
 
 `
