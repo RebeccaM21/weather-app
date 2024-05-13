@@ -4,9 +4,9 @@ export const SummaryTab = ({currentWeatherData}) => {
     return (
         <NavBar>
             <Title> {currentWeatherData?.city} </Title>
-            <TemperatureReading>{Math.trunc(currentWeatherData.main.temp)}°</TemperatureReading>
-            <SummaryDetails>{currentWeatherData.weather[0].description}</SummaryDetails>
-            <SummaryDetails>H:{Math.trunc(currentWeatherData.main.temp_max)}°  L:{Math.trunc(currentWeatherData.main.temp_min)}°</SummaryDetails>
+            <TemperatureReading>{Math.trunc(currentWeatherData?.main.temp)}°</TemperatureReading>
+            <SummaryDetails>{currentWeatherData?.weather[0].description}</SummaryDetails>
+            <SummaryDetails>H:{Math.trunc(currentWeatherData?.main.temp_max)}°  L:{Math.trunc(currentWeatherData?.main.temp_min)}°</SummaryDetails>
         </NavBar>
     )
 }
