@@ -7,11 +7,13 @@ import { ApiOptions, url } from "../../api/api"
 export const LocationSearch = ({onSearchChange}) => {
 
     const [search, setSearch] = useState("")
+    
 
     const handleOnChange = (data) => {
         setSearch(data)
         onSearchChange(data)
     }
+    
 
     const loadOptions = async (input) => {
         try {
