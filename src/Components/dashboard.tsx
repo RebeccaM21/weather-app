@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { SummaryTab } from "./summaryView/summaryTab"
 import { LocationSearch } from "./search/searchBar"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { API_KEY, forecastApiUrl, currentWeatherApiUrl } from "../api/api";
 import { HourlyForecast } from "./forecasts/hourlyForecast";
 import { DailyForecast } from "./forecasts/dailyForecast";
@@ -10,6 +10,35 @@ export const Dashboard = () => {
 
     const [currentWeather, setCurrentWeather] = useState(null)
     const [forecastWeather, setForecastWeather] = useState(null)
+
+    useEffect(() => {
+        const findCurrentLocation = () => { 
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(showPosition)
+            } 
+        }
+
+        const showPosition = async (data: any) => { 
+            const lat = data.coords.latitude;
+            const lon = data.coords.longitude;
+
+            const defaultWeatherFetch = await fetch(`${currentWeatherApiUrl}lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)
+            const defaultForecastFetch = await fetch(`${forecastApiUrl}lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)  
+
+           
+            Promise.all([defaultWeatherFetch, defaultForecastFetch])
+            .then(async(response) => { 
+                const defaultWeatherResponse = await response[0].json(); 
+                const defaultForecastResponse = await response[1].json(); 
+
+                setCurrentWeather({city: defaultWeatherResponse.name , ...defaultWeatherResponse })
+                setForecastWeather({city: defaultForecastResponse.name , ...defaultForecastResponse})
+            })
+        }
+
+        findCurrentLocation()
+
+    }, [])
 
     const handleOnSearchChange = async (data: { value: string, label: string }) => {
         const [latitude, longitude] = data?.value.split(" ") 
