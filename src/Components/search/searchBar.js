@@ -6,18 +6,11 @@ import { ApiOptions, url } from "../../api/api"
 
 export const LocationSearch = ({onSearchChange}) => {
 
-    const [search, setSearch] = useState("")
-    
-
-    const handleOnChange = (data) => {
-        setSearch(data)
-        onSearchChange(data)
-    }
-    
+    const [search, setSearch] = useState(null) 
 
     const loadOptions = async (input) => {
         try {
-            const response = await fetch(`${url}?namePrefix=${input}`, ApiOptions);
+            const response = await fetch(`${url}?minPopulation=100000&namePrefix=${input}`, ApiOptions);
             const result = await response.json();
 
             return {
@@ -32,6 +25,11 @@ export const LocationSearch = ({onSearchChange}) => {
         catch (error) {
             console.error(error);
         }
+    }
+
+    const handleOnChange = (data) => {
+        setSearch(data)
+        onSearchChange(data)
     }
 
 return (

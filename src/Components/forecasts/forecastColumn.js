@@ -1,37 +1,18 @@
 import styled from "styled-components"
-import sunny from "../../images/sunny.png"; 
-import cloudy from "../../images/cloudy.png";
-import lightning from "../../images/lightning.png";
-import rain from "../../images/rain.png";
 
-export const ForecastColumn = ({data}) => {
+export const ForecastColumn = ({data, position, daily}) => {
 
-    const getWeatherImage = () => {
+    const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-        console.log(data.weather[0].main)
-        
-        if(data.weather[0].main === "Clouds"){
-           return cloudy 
-        }
-        else if(data.weather[0].main === "Rain") {
-            return rain 
-        }
-        else if(data.weather[0].main === "Sun") {
-            return sunny
-        }
-        else if(data.weather[0].main === "Lightning") {
-            return lightning
-        }
-        else return sunny; 
-    }
-
+    const getDayInWeek = new Date().getDay();
+    const forecastDays = WEEKDAYS.splice(getDayInWeek, WEEKDAYS.length).concat(WEEKDAYS.splice(0, getDayInWeek));
+    
     return (
-        <Container>
-        <Text>{data.dt_txt.split(" ")[1]}</Text> 
-        <Image>
-            <img src={getWeatherImage()} alt="sunny" height={"50em"}/>
-            </Image>
-        <Text>{Math.trunc(data.main.temp)}°</Text> 
+        <Container> 
+        {daily && <Text>{forecastDays[position]}</Text>}
+        {!daily && <Text>{data.dt_txt.split(" ")[1]}</Text>}
+        <Image><img src={`images/${data.weather[0].icon}.png`} alt="weather" height={"50em"}/></Image>
+        <Text>{Math.trunc(data.main.temp)}°C</Text> 
         </Container>
     )
 } 
@@ -43,6 +24,7 @@ float: left;
 margin: 0.5em; 
 `
 const Text = styled.span`
+font-size: 1.2em;
 font-weight: bold; 
 `
 
